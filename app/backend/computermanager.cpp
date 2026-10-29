@@ -476,11 +476,6 @@ void ComputerManager::handleComputerStateChanged(NvComputer* computer)
 {
     emit computerStateChanged(computer);
 
-    if (computer->pendingQuit && computer->currentGameId == 0) {
-        computer->pendingQuit = false;
-        emit quitAppCompleted(QVariant());
-    }
-
     // Save updates to this host
     saveHost(computer);
 }
@@ -662,9 +657,15 @@ private:
         NvHTTP http(m_Computer);
 
         try {
-            if (m_Computer->currentGameId != 0) {
-                http.quitApp();
+            // Host status can report no current game even while a remote
+            // desktop session remains active. An explicit quit must send
+            // /cancel and wait for its result, not succeed from polling alone.
+            http.quitApp();
+            {
+                QWriteLocker lock(&m_Computer->lock);
+                m_Computer->pendingQuit = false;
             }
+            emit quitAppFailed(QString()); // Empty error signals completion.
         } catch (const GfeHttpResponseException& e) {
             {
                 QWriteLocker lock(&m_Computer->lock);
