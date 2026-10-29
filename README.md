@@ -51,10 +51,10 @@ arguments. For comparison, omit `PLVK_FORCE_SRGB_OUTPUT` or set it to `0`.
 System-shortcut capture still requires Moonlight's **Capture system keyboard
 shortcuts** setting and compositor support; this fork does not force it on.
 
-No portable fork-specific binary release is provided by this README. The local
-`dist/moonlight-pen.sh` bundle used by Shiui is not tracked here. Upstream
-Flatpak, Snap, AppImage, and release downloads do **not** include these patches.
-Shiui's Dock profiles and machine-specific geometry are separate from this fork.
+No portable fork-specific binary release is provided by this README; local
+`dist/` bundles are not tracked here. Upstream Flatpak, Snap, AppImage, and
+release downloads do **not** include these patches. Launchers, desktop
+integration and machine-specific window geometry are outside this fork.
 
 ## Validation and limitations
 
